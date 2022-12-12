@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: deploy-adityadixithwk5
+    labels:
+        app: api
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: api
+    template:
+        metadata:
+            labels:
+                app: api
+        spec:
+            containers:
+                - name: deploy-adityadixithwk5
+                  image: adidix/test
+                  ports:
+                      - containerPort: 5000
+                  volumeMounts:
+                  - name: myvolume
+                    mountPath: /models
+            volumes:
+              - name: myvolume
+                persistentVolumeClaim:
+                  claimName: pvc-adityadixithwk5
+---
+  
+apiVersion: v1
+kind: Service
+metadata:
+    name: servicehwk5
+spec:
+    type: LoadBalancer
+    selector:
+        app: api
+    ports:
+        - protocol: TCP
+          port: 5000
+          targetPort: 5000
