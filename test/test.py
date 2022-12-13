@@ -59,16 +59,16 @@ api = Flask(__name__)
 def get_result():
     res = {}
     file = request.files['image']
-    if file:
-        res['result'] = 'Complete'
+    if not file:
+        res['result'] = 'no image'
+    else:
+        res['result'] = 'done'
         image = Image.open(file.stream).convert('L')
         transform_obj = transform()
         image  = transform_obj(image)
         image = image.unsqueeze(0)
         ans = test(image)
         res['Predicted Digit'] = ans
-    else:
-        res['result'] = 'Image Not Found'
 
     return json.dumps(res)
 
