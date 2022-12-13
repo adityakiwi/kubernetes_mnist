@@ -20,10 +20,10 @@ spec:
                   ports:
                       - containerPort: 5000
                   volumeMounts:
-                  - name: myvolume
+                  - name: volumehwk5
                     mountPath: /models
             volumes:
-              - name: myvolume
+              - name: volumehwk5
                 persistentVolumeClaim:
                   claimName: pvc-adityadixithwk5
 ---

@@ -2,9 +2,6 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: pvc-adityadixithwk5
-  labels:
-      region: eu-de
-      zone: fra02
 spec:
   accessModes:
     - ReadWriteOnce

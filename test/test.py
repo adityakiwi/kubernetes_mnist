@@ -1,5 +1,8 @@
-from __future__ import print_function
-import argparse
+from PIL import Image
+import os
+from flask import Flask, json, request
+import time
+import argparse 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -33,7 +36,7 @@ class Net(nn.Module):
         output = F.log_softmax(x, dim=1)
         return output
 
-def inference(image):
+def test(image):
     model = Net().to('cpu')
     model.load_state_dict(torch.load('/models/mnist.pth'))
     model.eval()
@@ -52,17 +55,17 @@ def transform():
 
 api = Flask(__name__)
 
-@api.route('/inference', methods=['POST'])
+@api.route('/test', methods=['POST'])
 def get_result():
     res = {}
     file = request.files['image']
     if file:
-        res['result'] = 'Inference Task Complete'
+        res['result'] = 'Complete'
         image = Image.open(file.stream).convert('L')
         transform_obj = transform()
         image  = transform_obj(image)
         image = image.unsqueeze(0)
-        ans = inference(image)
+        ans = test(image)
         res['Predicted Digit'] = ans
     else:
         res['result'] = 'Image Not Found'
@@ -75,6 +78,6 @@ def main():
     img = Image.open("img_4.png")
     img = transform(img)
     img = img.unsqueeze(0)
-    ans = inference(img)
+    ans = test(img)
     print(ans)
 main()
